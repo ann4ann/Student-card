@@ -1,14 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import AddCard from "./addCard";
+import CardItem from "../components/cardItem";
 
 const StudentCard = () => {
-  const hadCard = false;
+  const rowStudentData = localStorage.getItem("studentData");
+  const studentData = JSON.parse(rowStudentData);
+
   return (
     <div className="m-3">
       <h1>Карточка студента</h1>
-      {hadCard ? (
-        <AddCard />
+      {rowStudentData ? (
+        <CardItem data={studentData} />
       ) : (
         <>
           <p>Нет данных</p>

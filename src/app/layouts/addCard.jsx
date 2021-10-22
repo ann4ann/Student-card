@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import TextField from "../components/textField";
 import { validator } from "../utils/validator";
 
 const AddCard = () => {
+  const rowStudentData = localStorage.getItem("studentData");
+  const studentData = JSON.parse(rowStudentData) || {};
   const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
-    yearOfBirth: "",
-    portfolio: ""
+    firstName: studentData.firstName || "",
+    lastName: studentData.lastName || "",
+    yearOfBirth: studentData.yearOfBirth || "",
+    portfolio: studentData.portfolio || ""
   });
   const [errors, setErrors] = useState({});
 
@@ -44,18 +47,22 @@ const AddCard = () => {
     return Object.keys(errors).length === 0;
   };
 
+  const isValid = Object.keys(errors).length === 0;
+
   const handleSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-    console.log(data);
+    localStorage.setItem("studentData", JSON.stringify(data));
   };
 
   return (
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-6 offset-md-3 p-4">
-          <h2 className="mb-4">Создать</h2>
+          <h1 className="mb-4">
+            {rowStudentData ? "Редактировать" : "Создать"}
+          </h1>
           <form onSubmit={handleSubmit}>
             <TextField
               label="Имя"
@@ -86,9 +93,27 @@ const AddCard = () => {
               onChange={handleChange}
               error={errors.portfolio}
             />
-            <button className="btn btn-primary w-100 mx-auto" type="submit">
-              Добавить
-            </button>
+            <div className="d-flex">
+              {rowStudentData && (
+                <Link
+                  to="/"
+                  className="btn btn-outline-primary btn-lg w-100 mx-1"
+                  role="button"
+                >
+                  Назад
+                </Link>
+              )}
+              <Link
+                className={`btn btn-primary btn-lg w-100 mx-1 ${
+                  !isValid ? "disabled" : ""
+                }`}
+                role="button"
+                onClick={handleSubmit}
+                to="/"
+              >
+                {rowStudentData ? "Изменить" : "Добавить"}
+              </Link>
+            </div>
           </form>
         </div>
       </div>

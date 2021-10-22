@@ -6,14 +6,14 @@ const TextField = ({ label, type, name, value, onChange, error }) => {
     <div className="input-group mb-3">
       <label htmlFor={name}>{label}</label>
       <input
-        className="w-100 mx-auto"
+        className="w-100 mx-auto fs-5"
         type={type}
         id={name}
         name={name}
         value={value}
         onChange={onChange}
       />
-      {error && <span>{error}</span>}
+      {error && <span className="text-danger">{error}</span>}
     </div>
   );
 };
